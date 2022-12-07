@@ -1,6 +1,6 @@
 {
   "name": "ewertondaniel/paypal-standard-php-sdk",
-  "version": "v1.0.7",
+  "version": "v1.0.1",
   "description": "PayPal Standard PHP SDK",
   "keywords": [
     "paypal",
