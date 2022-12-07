@@ -6,7 +6,7 @@
 # PayPal Standard PHP SDK
 
 _This library provides developers with a simple set of bindings to help you
-integrate [PayPal Standard] (https://developer.paypal.com/home) to a website
+integrate [PayPal Standard](https://developer.paypal.com/home) to a website
 and start receiving payments._
 
 ## 🛠 Requirements
