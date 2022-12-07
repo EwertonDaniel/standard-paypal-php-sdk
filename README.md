@@ -76,8 +76,8 @@ use EwertonDaniel\PayPal\Order;
             ->setLandingPage('LOGIN')
             ->setShippingPreference('NO_SHIPPING')
             ->setUserAction('PAY_NOW')
-            ->setReturnUrl('https://example.com/returnUrl');
-            ->setNotificationUrl('https://example.com/notifyUrl');
+            ->setReturnUrl('https://example.com/returnUrl')
+            ->setNotificationUrl('https://example.com/notifyUrl')
             ->setCancelUrl('https://example.com/cancelUrl');
             
         $response = $order->create();

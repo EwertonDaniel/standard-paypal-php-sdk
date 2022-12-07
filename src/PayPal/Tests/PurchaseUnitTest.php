@@ -135,7 +135,7 @@ class PurchaseUnitTest extends TestCase
      */
     function testPayeeSetter(): void
     {
-        $this->purchase_unit->payee('djin@mandalore.com', 'MAND-0' . random_int(1, 9) + rand(400, 499));
+        $this->purchase_unit->payee('djin@mandalore.com', 'KSR5PKT74QFGT');
         $payee = $this->purchase_unit->getPayee();
         if (!empty($payee)) {
             print $this->success("Payee Setter => OK");
@@ -149,7 +149,7 @@ class PurchaseUnitTest extends TestCase
      */
     function testPayeeClass(): void
     {
-        $this->purchase_unit->setPayee(new PurchaseUnit\Payee('djin@mandalore.com', 'MAND-0' . random_int(1, 9) + rand(300, 399)));
+        $this->purchase_unit->setPayee(new PurchaseUnit\Payee('djin@mandalore.com', 'KSR5PKT74QFGT'));
         $payee = $this->purchase_unit->getPayee();
         if (!empty($payee)) {
             print $this->success("Payee Class => OK");
@@ -225,12 +225,11 @@ class PurchaseUnitTest extends TestCase
     function testToArray(): void
     {
         $id = random_int(1, 9) + random_int(100, 199);
+        $this->setItem();
         $this->purchase_unit->setReferenceId(Uuid::uuid1()->toString());
         $this->purchase_unit->setDescription('I can write up to one hundred and twenty seven characters as a testToArray description...');
         $this->purchase_unit->setCurrencyCode('EUR');
-        $this->purchase_unit->addItemWithBasicData('Blacksaber Mandalore', 1, 29900);
         $this->purchase_unit->setInvoiceId('my-invoice-0' . $id + random_int(1, 55));
-        $this->setItem();
         $this->purchase_unit->setSoftdescriptor('my-invoice-00' . $id);
         $array = $this->purchase_unit->toArray();
         if (!empty($array)) {
@@ -247,15 +246,13 @@ class PurchaseUnitTest extends TestCase
     function testString(): void
     {
         $id = random_int(1, 9) + random_int(100, 199);
-
         $this->purchase_unit->setReferenceId(Uuid::uuid4()->toString());
+        $this->setItem();
         $this->purchase_unit->setDescription('I can write up to one hundred and twenty seven characters as a testString description...');
         $this->purchase_unit->setCurrencyCode('MXN');
-        $this->purchase_unit->addItemWithBasicData('Blacksaber Mandalore', 1, 29900);
         $this->purchase_unit->setInvoiceId('my-invoice-0'. $id + random_int(1, 55));
-        $this->setItem();
         $this->purchase_unit->setSoftdescriptor('my-invoice-000' . random_int(1, 9) + rand(91, 99));
-        $string = $this->purchase_unit->toString();
+        $string = $this->purchase_unit->__toString();
         print $this->success("To Array => OK");
         print $this->information($string, true);
         $this->assertJson($string);
@@ -270,10 +267,9 @@ class PurchaseUnitTest extends TestCase
     {
         $number = random_int(1, 9) + rand(10, 90);
         $item = new PurchaseUnit\Item();
-        $this->items[] = $item->setName('Darksaber')->setSku('MY-ITEM-' . $number)->setDescription('This lightsaber was stolen from your Jedi Temple by my ancestors during the fall of the Old Republic')
-            ->setQuantity(1);
+        $this->items[] = $item->setName('Blacksaber Mandalore')->setQuantity(1)->setUnitAmount('BRL',29900);
         $this->purchase_unit->addItem($this->items[0]);
-        $this->purchase_unit->payee('djin@mandalore.com', 'MAND-00' . $number + rand(90, 999));
+        $this->purchase_unit->payee('djin@mandalore.com', 'KSR5PKT74QFGT');
         $this->purchase_unit->shipping()
             ->setName('Djin Djarin')
             ->setType('PICKUP_IN_PERSON')

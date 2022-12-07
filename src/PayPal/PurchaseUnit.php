@@ -208,7 +208,7 @@ class PurchaseUnit
         return get_object_vars($this);
     }
 
-    public function toString(): string
+    public function __toString(): string
     {
         return json_encode($this->toArray());
     }
