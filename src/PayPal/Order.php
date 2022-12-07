@@ -65,6 +65,11 @@ class Order
     {
         $this->setUrl('order_create');
         $token = $this->auth->getAccessToken();
+        print_r([
+            'intent' => $this->getIntent(),
+            'purchase_units' => $this->getPurchaseUnits(),
+            'payment_source' => $this->getPaymentSource(),
+        ]);
         $response = $this->http
             ->withBearerToken($token)
             ->withHeaders([

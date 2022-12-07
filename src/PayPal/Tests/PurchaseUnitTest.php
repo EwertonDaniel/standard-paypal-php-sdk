@@ -70,9 +70,13 @@ class PurchaseUnitTest extends TestCase
         $this->assertEquals('EUR', $amount['currency_code']);
     }
 
+    /**
+     * @throws ValidationException
+     */
     function testSetValue()
     {
-        $this->purchase_unit->setValue(19900);
+        $this->purchase_unit->setCurrencyCode('USD')
+            ->addItemWithBasicData('Blacksaber Mandalore', 1, 29900)->toArray();
         $amount = $this->purchase_unit->getAmount();
         if (isset($amount['value'])) {
             print $this->success("Value Setter => OK");
@@ -224,7 +228,7 @@ class PurchaseUnitTest extends TestCase
         $this->purchase_unit->setReferenceId(Uuid::uuid1()->toString());
         $this->purchase_unit->setDescription('I can write up to one hundred and twenty seven characters as a testToArray description...');
         $this->purchase_unit->setCurrencyCode('EUR');
-        $this->purchase_unit->setValue(19900);
+        $this->purchase_unit->addItemWithBasicData('Blacksaber Mandalore', 1, 29900);
         $this->purchase_unit->setInvoiceId('my-invoice-0' . $id + random_int(1, 55));
         $this->setItem();
         $this->purchase_unit->setSoftdescriptor('my-invoice-00' . $id);
@@ -247,7 +251,7 @@ class PurchaseUnitTest extends TestCase
         $this->purchase_unit->setReferenceId(Uuid::uuid4()->toString());
         $this->purchase_unit->setDescription('I can write up to one hundred and twenty seven characters as a testString description...');
         $this->purchase_unit->setCurrencyCode('MXN');
-        $this->purchase_unit->setValue(29900);
+        $this->purchase_unit->addItemWithBasicData('Blacksaber Mandalore', 1, 29900);
         $this->purchase_unit->setInvoiceId('my-invoice-0'. $id + random_int(1, 55));
         $this->setItem();
         $this->purchase_unit->setSoftdescriptor('my-invoice-000' . random_int(1, 9) + rand(91, 99));

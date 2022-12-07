@@ -7,6 +7,7 @@ use EwertonDaniel\PayPal\Exceptions\OrderException;
 use EwertonDaniel\PayPal\Exceptions\PayPalAuthenticationException;
 use EwertonDaniel\PayPal\Exceptions\ValidationException;
 use EwertonDaniel\PayPal\Order;
+use EwertonDaniel\PayPal\PurchaseUnit\Item;
 use EwertonDaniel\PayPal\Traits\DisplayColor;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
@@ -144,12 +145,15 @@ class OrderTest extends TestCase
      */
     function testCreateOrder(): void
     {
+        $item = new Item();
+        $item->setName('Blacksaber Mandalore')->setQuantity(1)->setUnitAmount('BRL',29900);
         $this->order
             ->setPaypalRequestId()
             ->setIntent('CAPTURE')
             ->purchaseUnit()
+            ->setDiscount('BRL',900)
             ->setCurrencyCode('BRL')
-            ->addItemWithBasicData('Blacksaber Mandalore', 1, 29900)
+            ->addItem($item)
             ->setReferenceId()
             ->setDescription('I can write up to one hundred and twenty seven characters as a testDescription description...');
         $this->order->pushPurchaseUnit()

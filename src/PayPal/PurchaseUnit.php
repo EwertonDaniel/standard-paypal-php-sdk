@@ -42,13 +42,13 @@ class PurchaseUnit
         foreach ($this->items as $item) {
             $value += $item['unit_amount']['value'];
         }
-        $this->amount['value'] = round($value, 2);
+        $this->amount['value'] = round($value - ($this->amount['breakdown']['discount']['value'] ?? 0), 2);
     }
 
     private function setBreakdownValue(): void
     {
         $this->amount['breakdown']['item_total'] = [
-            'value' => $this->amount['value'] ?? null,
+            'value' => $this->amount['value'] + ($this->amount['breakdown']['discount']['value'] ?? 0),
             'currency_code' => $this->amount['currency_code']
         ];
     }
