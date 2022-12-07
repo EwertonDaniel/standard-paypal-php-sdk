@@ -91,7 +91,7 @@ class Order
             throw new OrderCreationException('Empty response');
         }
         foreach ($response['links'] as $link) {
-            $links[$link['rel']] = [
+            $links[str_replace('-', '_', $link['rel'])] = [
                 'url' => $link['href'],
                 'method' => $link['method']
             ];
