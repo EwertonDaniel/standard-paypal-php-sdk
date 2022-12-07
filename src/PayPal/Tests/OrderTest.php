@@ -166,7 +166,7 @@ class OrderTest extends TestCase
             print $this->information('ID: ' . $response['id']);
             print $this->information('Status: ' . $response['status']);
             print $this->information('Self Url: ' . $response['links']['self']['url']);
-            print $this->information('Payer Action: ' . $response['links']['payer-action']['url']);
+            print $this->information('Payer Action: ' . $response['links']['payer_action']['url']);
         }
         $this->assertIsArray($response);
     }
