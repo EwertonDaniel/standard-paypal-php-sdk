@@ -1,6 +1,5 @@
 [![Generic badge](https://img.shields.io/github/last-commit/ewertondaniel/paypal-standard-php-sdk)](https://github.com/EwertonDaniel/paypal-standard-php-sdk.git)
 [![Generic badge](https://img.shields.io/badge/stable-v1.0.1-blue.svg)](https://github.com/EwertonDaniel/paypal-standard-php-sdk)
-[![GitHub license](https://img.shields.io/github/license/ewertondaniel/paypal-standard-php-sdk)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
 [![Twitter](https://img.shields.io/twitter/follow/dsrewerton?style=social)](https://twitter.com/dsrewerton)
 
 # PayPal Standard PHP SDK
@@ -64,7 +63,7 @@ use EwertonDaniel\PayPal\Order;
             ->setCurrencyCode('BRL')
             ->addItemWithBasicData('Blacksaber Mandalore', 1, 29900) // string $name, int $quantity, int $value
             ->setReferenceId()
-            ->setDescription('I can write up to one hundred and twenty seven characters as a testDescription description...');
+            ->setDescription('I can write up to one hundred and twenty seven characters as a description...');
             
         // Set Payment Source    
         $order->pushPurchaseUnit()
