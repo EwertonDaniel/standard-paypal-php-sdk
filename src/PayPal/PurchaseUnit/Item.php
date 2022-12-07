@@ -58,7 +58,7 @@ class Item
 
     public function setSku(string $sku): static
     {
-        $this->sku = substr($sku, 0, 10);
+        $this->sku = substr($sku, 0, 36);
         return $this;
     }
 
