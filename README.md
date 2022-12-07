@@ -1,5 +1,5 @@
 [![Generic badge](https://img.shields.io/github/last-commit/ewertondaniel/standard-paypal-php-sdk)](https://github.com/EwertonDaniel/standard-paypal-php-sdk.git)
-[![Generic badge](https://img.shields.io/badge/stable-v1.0.1-blue.svg)](https://github.com/EwertonDaniel/standard-paypal-php-sdk)
+[![Generic badge](https://img.shields.io/badge/stable-v1.0.2-blue.svg)](https://github.com/EwertonDaniel/standard-paypal-php-sdk)
 [![Twitter](https://img.shields.io/twitter/follow/dsrewerton?style=social)](https://twitter.com/dsrewerton)
 
 # PayPal Standard PHP SDK
