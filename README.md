@@ -1,5 +1,5 @@
 [![Generic badge](https://img.shields.io/github/last-commit/ewertondaniel/paypal-standard-php-sdk)](https://github.com/EwertonDaniel/paypal-standard-php-sdk)
-[![Generic badge](https://img.shields.io/badge/stable-v1.0.7-blue.svg)](https://github.com/EwertonDaniel/paypal-standard-php-sdk)
+[![Generic badge](https://img.shields.io/badge/stable-v1.0.1-blue.svg)](https://github.com/EwertonDaniel/paypal-standard-php-sdk)
 [![GitHub license](https://img.shields.io/github/license/ewertondaniel/paypal-standard-php-sdk)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
 [![Twitter](https://img.shields.io/twitter/follow/dsrewerton?style=social)](https://twitter.com/dsrewerton)
 
