@@ -62,7 +62,7 @@ use EwertonDaniel\PayPal\Order;
             ->setIntent('CAPTURE')
             ->purchaseUnit()
             ->setCurrencyCode('BRL')
-            ->addItemWithBasicData('Blacksaber Mandalore', 1, 29900)
+            ->addItemWithBasicData('Blacksaber Mandalore', 1, 29900) // string $name, int $quantity, int $value
             ->setReferenceId()
             ->setDescription('I can write up to one hundred and twenty seven characters as a testDescription description...');
             
@@ -72,7 +72,7 @@ use EwertonDaniel\PayPal\Order;
             ->paypal()
             ->experienceContext()
             ->setPaymentMethodPreference('IMMEDIATE_PAYMENT_REQUIRED')
-            ->setBrandName(' Bounty Hunters Guild (BHG)')
+            ->setBrandName('Bounty Hunters Guild (BHG)') // Company name
             ->setLocale('pt-BR')
             ->setLandingPage('LOGIN')
             ->setShippingPreference('NO_SHIPPING')
