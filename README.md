@@ -39,11 +39,6 @@ That's it! **PayPal Standard PHP SDK** has been successfully installed!
 
 use EwertonDaniel\PayPal\Auth;
 
-  /**
-   * Brazilian CPF and Phone Number can be only numbers or with default mask;
-   * The email and phone number fields are optional;
-   */
-  
         $authentication = new Auth($client_id, $client_secret, $is_production);
         $authentication->getScopes();
         $authentication->getAccessToken();
