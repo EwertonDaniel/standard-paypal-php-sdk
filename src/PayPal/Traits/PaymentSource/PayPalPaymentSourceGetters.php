@@ -70,7 +70,7 @@ trait PayPalPaymentSourceGetters
     /**
      * @return array
      */
-    public function getTxId(): array
+    public function getTaxInfo(): array
     {
         return $this->tax_info;
     }

@@ -144,9 +144,10 @@ trait PayPalPaymentSourceSetters
      * @throws BrCnpjValidationException
      * @throws BrCpfValidationException
      */
-    public function setTaxInfo(string $tx_id, string $tx_id_type): void
+    public function setTaxInfo(string $tx_id, string $tx_id_type): static
     {
         $this->tax_info = (new TaxInfo($tx_id, $tx_id_type))->toArray();
+        return $this;
     }
 
     public function setExperienceContext(ExperienceContext $experience_context): static
