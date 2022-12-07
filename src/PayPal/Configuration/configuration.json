@@ -1,0 +1,30 @@
+{
+  "API": {
+    "name": "Ewerton Daniel/PayPal Standard PHP SDK",
+    "version": "v1.0.1"
+  },
+  "ROOT_LIVE_URL": "https://api-m.paypal.com",
+  "ROOT_SANDBOX_URL": "https://api-m.sandbox.paypal.com",
+  "ENDPOINTS": {
+    "test": {
+      "uri": "/test",
+      "method": "get"
+    },
+    "auth": {
+      "uri": "/v1/oauth2/token",
+      "method": "post"
+    },
+    "order_create": {
+      "uri": "/v2/checkout/orders",
+      "method": "post"
+    },
+    "order_update": {
+      "uri": "/v2/checkout/orders/{id}",
+      "method": "patch"
+    },
+    "order_detail": {
+      "uri": "/v2/checkout/orders/{id}",
+      "method": "get"
+    }
+  }
+}
