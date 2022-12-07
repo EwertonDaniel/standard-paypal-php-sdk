@@ -7,6 +7,7 @@ use EwertonDaniel\PayPal\Exceptions\BrCpfValidationException;
 use EwertonDaniel\PayPal\Exceptions\ValidationException;
 use EwertonDaniel\PayPal\Rules\BrCnpjRule;
 use EwertonDaniel\PayPal\Rules\BrCpfRule;
+use GuzzleHttp\Utils;
 
 class TaxInfo
 {
@@ -44,5 +45,10 @@ class TaxInfo
     public function toArray(): array
     {
         return get_object_vars($this);
+    }
+
+    public function __toString(): string
+    {
+        return Utils::jsonEncode($this->toArray());
     }
 }

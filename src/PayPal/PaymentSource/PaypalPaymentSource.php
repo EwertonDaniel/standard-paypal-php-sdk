@@ -6,6 +6,7 @@ use EwertonDaniel\PayPal\Exceptions\ValidationException;
 use EwertonDaniel\PayPal\PhoneNumber;
 use EwertonDaniel\PayPal\Traits\PaymentSource\PayPalPaymentSourceGetters;
 use EwertonDaniel\PayPal\Traits\PaymentSource\PayPalPaymentSourceSetters;
+use GuzzleHttp\Utils;
 
 class PaypalPaymentSource
 {
@@ -36,5 +37,10 @@ class PaypalPaymentSource
             $this->experience_context = $this->experience_context->toArray();
         }
         return get_object_vars($this);
+    }
+
+    public function __toString(): string
+    {
+        return Utils::jsonEncode($this->toArray());
     }
 }

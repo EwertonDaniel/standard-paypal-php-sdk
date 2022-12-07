@@ -140,9 +140,10 @@ trait PayPalPaymentSourceSetters
     /**
      * @param string $tx_id
      * @param string $tx_id_type
-     * @throws ValidationException
+     * @return PayPalPaymentSourceSetters
      * @throws BrCnpjValidationException
      * @throws BrCpfValidationException
+     * @throws ValidationException
      */
     public function setTaxInfo(string $tx_id, string $tx_id_type): static
     {

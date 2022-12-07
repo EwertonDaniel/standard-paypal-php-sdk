@@ -9,6 +9,7 @@ use EwertonDaniel\PayPal\Exceptions\ValidationException;
 use EwertonDaniel\PayPal\Traits\Order\OrderGetters;
 use EwertonDaniel\PayPal\Traits\Order\OrderSetters;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Utils;
 
 class Order
 {
@@ -65,11 +66,6 @@ class Order
     {
         $this->setUrl('order_create');
         $token = $this->auth->getAccessToken();
-        print_r([
-            'intent' => $this->getIntent(),
-            'purchase_units' => $this->getPurchaseUnits(),
-            'payment_source' => $this->getPaymentSource(),
-        ]);
         $response = $this->http
             ->withBearerToken($token)
             ->withHeaders([
@@ -131,5 +127,10 @@ class Order
         $response['links'] = $links;
         $this->response = $response;
         return $this->response;
+    }
+
+    public function __toString(): string
+    {
+        return Utils::jsonEncode($this->response ?? []);
     }
 }
