@@ -55,6 +55,9 @@ use EwertonDaniel\PayPal\Auth;
 
 use EwertonDaniel\PayPal\Order;
 
+        $order = new Order($authentication);
+        
+        //Set Purchase Unit
         $order->setPaypalRequestId()
             ->setIntent('CAPTURE')
             ->purchaseUnit()
@@ -62,6 +65,8 @@ use EwertonDaniel\PayPal\Order;
             ->addItemWithBasicData('Blacksaber Mandalore', 1, 29900)
             ->setReferenceId()
             ->setDescription('I can write up to one hundred and twenty seven characters as a testDescription description...');
+            
+        // Set Payment Source    
         $order->pushPurchaseUnit()
             ->paymentSource()
             ->paypal()
@@ -76,7 +81,7 @@ use EwertonDaniel\PayPal\Order;
             ->setNotificationUrl('https://example.com/notifyUrl');
             ->setCancelUrl('https://example.com/cancelUrl');
             
-        $response = $this->order->create();
+        $response = $order->create();
 
 ```
 
