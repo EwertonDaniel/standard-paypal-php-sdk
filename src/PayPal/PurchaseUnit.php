@@ -6,6 +6,7 @@ use EwertonDaniel\PayPal\Exceptions\EmailValidationException;
 use EwertonDaniel\PayPal\Exceptions\ValidationException;
 use EwertonDaniel\PayPal\PurchaseUnit\Item;
 use EwertonDaniel\PayPal\PurchaseUnit\Payee;
+use EwertonDaniel\PayPal\PurchaseUnit\UnitAmount;
 use Ramsey\Uuid\Uuid;
 
 class PurchaseUnit
@@ -50,6 +51,12 @@ class PurchaseUnit
             'value' => $this->amount['value'] ?? null,
             'currency_code' => $this->amount['currency_code']
         ];
+    }
+
+    public function setDiscount(string $currency_code, int $value): static
+    {
+        $this->amount['breakdown']['discount'] = (new UnitAmount($currency_code, $value))->toArray();
+        return $this;
     }
 
     public function setInvoiceId(string $invoice_id): static

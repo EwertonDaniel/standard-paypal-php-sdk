@@ -41,12 +41,6 @@ class Item
         return $this;
     }
 
-    public function setDiscount(string $currency_code, int $value): static
-    {
-        $this->discount = (new UnitAmount($currency_code, $value))->toArray();
-        return $this;
-    }
-
     /**
      * @throws ValidationException
      */
