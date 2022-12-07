@@ -3,6 +3,7 @@
 namespace EwertonDaniel\PayPal;
 
 use EwertonDaniel\PayPal\Exceptions\ValidationException;
+use GuzzleHttp\Utils;
 
 class Shipping
 {
@@ -40,9 +41,7 @@ class Shipping
 
     public function toArray(): array
     {
-        $response = array(
-            'address' => $this->address->toArray()
-        );
+        $response = array('address' => is_array($this->address) ? $this->address : $this->address->toArray());
         if (isset($this->name)) {
             $response['name'] = $this->name;
         }
@@ -50,5 +49,10 @@ class Shipping
             $response['type'] = $this->type;
         }
         return $response;
+    }
+
+    public function __toString(): string
+    {
+        return Utils::jsonEncode($this->toArray());
     }
 }

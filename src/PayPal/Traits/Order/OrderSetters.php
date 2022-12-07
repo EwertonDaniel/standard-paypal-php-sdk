@@ -5,7 +5,7 @@ namespace EwertonDaniel\PayPal\Traits\Order;
 use Echosistema\SHR\Http;
 use EwertonDaniel\PayPal\Auth;
 use EwertonDaniel\PayPal\Configuration\Configuration;
-use EwertonDaniel\PayPal\Exceptions\PaymentException;
+use EwertonDaniel\PayPal\Exceptions\OrderException;
 use EwertonDaniel\PayPal\Exceptions\PayPalAuthenticationException;
 use EwertonDaniel\PayPal\Exceptions\ValidationException;
 use EwertonDaniel\PayPal\Order;
@@ -120,15 +120,21 @@ trait OrderSetters
     }
 
     /**
-     * @throws PaymentException
+     * @throws OrderException
      */
-    protected function setUrl(): void
+    protected function setUrl(string $endpoint): void
     {
         $url = $this->configuration->setIsProduction($this->auth->is_production ?? false)->getUrl();
-        if (!$url) throw new PaymentException();
-        $endpoint = $this->configuration->getEndpoint('order_create');
-        if (!isset($endpoint['uri'])) throw new PaymentException();
+        if (!$url) throw new OrderException();
+        $endpoint = $this->configuration->getEndpoint($endpoint);
+        if (!isset($endpoint['uri'])) throw new OrderException();
         $this->url = $url . $endpoint['uri'];
+    }
+
+    public function setOrderId(string $order_id): static
+    {
+        $this->order_id = $order_id;
+        return $this;
     }
 
 }

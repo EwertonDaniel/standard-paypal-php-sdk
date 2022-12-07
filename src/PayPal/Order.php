@@ -4,8 +4,7 @@ namespace EwertonDaniel\PayPal;
 
 use Echosistema\SHR\Http;
 use EwertonDaniel\PayPal\Configuration\Configuration;
-use EwertonDaniel\PayPal\Exceptions\OrderCreationException;
-use EwertonDaniel\PayPal\Exceptions\PaymentException;
+use EwertonDaniel\PayPal\Exceptions\OrderException;
 use EwertonDaniel\PayPal\Exceptions\ValidationException;
 use EwertonDaniel\PayPal\Traits\Order\OrderGetters;
 use EwertonDaniel\PayPal\Traits\Order\OrderSetters;
@@ -17,6 +16,7 @@ class Order
 
     protected null|Auth $auth;
     protected array $response;
+    protected string $order_id;
 
     public function __construct(Auth|null $auth = null)
     {
@@ -58,19 +58,18 @@ class Order
     }
 
     /**
-     * @throws PaymentException
      * @throws GuzzleException|ValidationException
-     * @throws OrderCreationException
+     * @throws OrderException
      */
     public function create(): array
     {
-        $this->setUrl();
+        $this->setUrl('order_create');
         $token = $this->auth->getAccessToken();
         $response = $this->http
             ->withBearerToken($token)
             ->withHeaders([
                 'User-Agent' => $this->configuration->getSdkVersion(),
-                'PayPal-Request-Id' => $this->paypal_request_id ?? $this->getPaypalRequestId(),
+                'PayPal-Request-Id' => $this->getPaypalRequestId(),
                 'return' => $this->getReturnType()
             ])->withJson([
                 'intent' => $this->getIntent(),
@@ -82,13 +81,35 @@ class Order
     }
 
     /**
-     * @throws OrderCreationException
+     * @throws ValidationException|OrderException
+     * @throws GuzzleException
+     */
+    public function detail(): array
+    {
+        $this->setUrl('order_detail');
+        if (!$this->getOrderId()) {
+            throw new OrderException('Order id value is null!');
+        }
+        $this->url = str_replace('{id}', $this->order_id, $this->getUrl());
+        $token = $this->auth->getAccessToken();
+        $response = $this->http
+            ->withBearerToken($token)
+            ->withHeaders([
+                'User-Agent' => $this->configuration->getSdkVersion(),
+                'return' => $this->getReturnType()
+            ])->get($this->getUrl());
+        $response['body']['success'] = $response['successfully'] ?? false;
+        return $this->getResponse($response['body']);
+    }
+
+    /**
+     * @throws OrderException
      */
     private function getResponse(array $response): array
     {
         $links = array();
         if (!isset($response['links'])) {
-            throw new OrderCreationException('Empty response');
+            throw new OrderException('Empty response');
         }
         foreach ($response['links'] as $link) {
             $links[str_replace('-', '_', $link['rel'])] = [

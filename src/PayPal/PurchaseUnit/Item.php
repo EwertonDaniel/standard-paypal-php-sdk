@@ -3,6 +3,9 @@
 namespace EwertonDaniel\PayPal\PurchaseUnit;
 
 use EwertonDaniel\PayPal\Exceptions\ValidationException;
+use EwertonDaniel\PayPal\PurchaseUnit\Item\Category;
+use EwertonDaniel\PayPal\PurchaseUnit\Item\Quantity;
+use GuzzleHttp\Utils;
 
 class Item
 {
@@ -28,29 +31,19 @@ class Item
      */
     public function setQuantity(int $quantity): static
     {
-        if ($quantity > 10) {
-            throw new ValidationException('The quantity must be equal or less than 10');
-        }
-        $this->quantity = $quantity;
+        $this->quantity = (new Quantity($quantity))->get();
         return $this;
     }
 
     public function setUnitAmount(string $currency_code, int $value): static
     {
-        $value = round($value / 100, 2);
-        $this->unit_amount = [
-            'currency_code' => $currency_code,
-            'value' => $value
-        ];
+        $this->unit_amount = (new UnitAmount($currency_code, $value))->toArray();
         return $this;
     }
 
     public function setDiscount(string $currency_code, int $value): static
     {
-        $this->discount = [
-            'currency_code' => $currency_code,
-            'value' => $value
-        ];
+        $this->discount = (new UnitAmount($currency_code, $value))->toArray();
         return $this;
     }
 
@@ -59,10 +52,7 @@ class Item
      */
     public function setCategory(string $category): static
     {
-        if (!in_array(strtoupper($category), ['DIGITAL_GOODS', 'PHYSICAL_GOODS', 'DONATION'])) {
-            throw new ValidationException('This is not a valid category! Valid categories: DIGITAL_GOODS, PHYSICAL_GOODS, DONATION');
-        }
-        $this->category = $category;
+        $this->category = (new Category($category))->get();
         return $this;
     }
 
@@ -74,12 +64,17 @@ class Item
 
     public function setSku(string $sku): static
     {
-        $this->sku = substr($sku, 0, 127);
+        $this->sku = substr($sku, 0, 10);
         return $this;
     }
 
     public function toArray(): array
     {
         return get_object_vars($this);
+    }
+
+    public function __toString(): string
+    {
+        return Utils::jsonEncode($this->toArray());
     }
 }

@@ -54,4 +54,9 @@ trait OrderGetters
     {
         return $this->url ?? throw new ValidationException('The url variable has not been initialized!');
     }
+
+    public function getOrderId(): string|null
+    {
+        return $this->order_id ?? null;
+    }
 }

@@ -9,6 +9,7 @@ use EwertonDaniel\PayPal\Traits\Auth\AuthGetters;
 use EwertonDaniel\PayPal\Traits\Auth\AuthSetters;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Utils;
 
 class Auth
 {
@@ -27,7 +28,7 @@ class Auth
     public function __construct(
         private readonly string $client_id,
         private readonly string $client_secret,
-        public readonly bool   $is_production = false
+        public readonly bool    $is_production = false
     )
     {
         $this->__init__();
@@ -81,5 +82,22 @@ class Auth
             ->post($this->url);
         $this->response = $reponse['body'];
         $this->setResponseParams();
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'scopes' => $this->getScopes(),
+            'access_token' => $this->getAccessToken(),
+            'token_type' => $this->getTokenType(),
+            'app_id' => $this->getAppId(),
+            'expires_in' => $this->getExpiresIn(),
+            'nonce' => $this->getNonce()
+        ];
+    }
+
+    public function __toString(): string
+    {
+        return Utils::jsonEncode($this->toArray());
     }
 }

@@ -2,6 +2,8 @@
 
 namespace EwertonDaniel\PayPal;
 
+use GuzzleHttp\Utils;
+
 class Address
 {
     protected string $address_line_1;
@@ -50,5 +52,10 @@ class Address
     public function toArray(): array
     {
         return get_object_vars($this);
+    }
+
+    public function __toString(): string
+    {
+        return Utils::jsonEncode($this->toArray());
     }
 }

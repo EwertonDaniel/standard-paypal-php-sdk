@@ -5,10 +5,12 @@ namespace EwertonDaniel\PayPal\Traits\PaymentSource;
 use EwertonDaniel\PayPal\Address;
 use EwertonDaniel\PayPal\Exceptions\BrCnpjValidationException;
 use EwertonDaniel\PayPal\Exceptions\BrCpfValidationException;
+use EwertonDaniel\PayPal\Exceptions\EmailValidationException;
 use EwertonDaniel\PayPal\Exceptions\ValidationException;
 use EwertonDaniel\PayPal\PaymentSource\ExperienceContext;
 use EwertonDaniel\PayPal\PaymentSource\PaypalPaymentSource;
 use EwertonDaniel\PayPal\PhoneNumber;
+use EwertonDaniel\PayPal\Rules\EmailRule;
 use EwertonDaniel\PayPal\TaxInfo;
 
 trait PayPalPaymentSourceSetters
@@ -94,10 +96,11 @@ trait PayPalPaymentSourceSetters
 
     /**
      * @param string $email_address
+     * @throws EmailValidationException
      */
     public function setEmailAddress(string $email_address): void
     {
-        $this->email_address = $email_address;
+        $this->email_address = (new EmailRule($email_address))->getEmail();
     }
 
     /**

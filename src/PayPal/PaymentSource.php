@@ -3,6 +3,7 @@
 namespace EwertonDaniel\PayPal;
 
 use EwertonDaniel\PayPal\PaymentSource\PaypalPaymentSource;
+use GuzzleHttp\Utils;
 
 class PaymentSource
 {
@@ -10,8 +11,7 @@ class PaymentSource
 
     public function paypal(): PaypalPaymentSource
     {
-        $this->paypal = new PaypalPaymentSource();
-        return $this->paypal;
+        return $this->paypal = new PaypalPaymentSource();
     }
 
     /**
@@ -39,5 +39,10 @@ class PaymentSource
             $this->paypal = $this->paypal->toArray();
         }
         return get_object_vars($this);
+    }
+
+    public function __toString(): string
+    {
+        return Utils::jsonEncode($this->toArray());
     }
 }

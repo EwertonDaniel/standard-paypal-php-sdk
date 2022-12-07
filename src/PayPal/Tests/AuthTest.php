@@ -3,20 +3,33 @@
 namespace EwertonDaniel\PayPal\Tests;
 
 use EwertonDaniel\PayPal\Auth;
+use EwertonDaniel\PayPal\Exceptions\PayPalAuthenticationException;
 use EwertonDaniel\PayPal\Traits\DisplayColor;
+use GuzzleHttp\Exception\GuzzleException;
 use PHPUnit\Framework\TestCase;
 
 class AuthTest extends TestCase
 {
     use DisplayColor;
-
+    protected string $client_id;
+    protected string $client_secret;
     protected Auth $auth;
     const CLIENT_ID = '#';
     const CLIENT_SECRET = '#';
 
+    public function setCredentials(string $client_id, string $client_secret)
+    {
+        $this->client_id = $client_id;
+        $this->client_secret = $client_secret;
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws PayPalAuthenticationException
+     */
     function setUp(): void
     {
-        $this->auth = new Auth(self::CLIENT_ID, self::CLIENT_SECRET);
+        $this->auth = new Auth($this->client_id ?? self::CLIENT_ID, $this->client_secret ?? self::CLIENT_SECRET);
     }
 
 

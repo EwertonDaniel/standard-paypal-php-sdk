@@ -49,6 +49,47 @@ use EwertonDaniel\PayPal\Auth;
 
 ```
 
+### 💲 Create an Order
+
+```php
+
+use EwertonDaniel\PayPal\Order;
+
+        $order->setPaypalRequestId()
+            ->setIntent('CAPTURE')
+            ->purchaseUnit()
+            ->setCurrencyCode('BRL')
+            ->addItemWithBasicData('Blacksaber Mandalore', 1, 29900)
+            ->setReferenceId()
+            ->setDescription('I can write up to one hundred and twenty seven characters as a testDescription description...');
+        $order->pushPurchaseUnit()
+            ->paymentSource()
+            ->paypal()
+            ->experienceContext()
+            ->setPaymentMethodPreference('IMMEDIATE_PAYMENT_REQUIRED')
+            ->setBrandName(' Bounty Hunters Guild (BHG)')
+            ->setLocale('pt-BR')
+            ->setLandingPage('LOGIN')
+            ->setShippingPreference('NO_SHIPPING')
+            ->setUserAction('PAY_NOW')
+            ->setReturnUrl('https://example.com/returnUrl');
+            ->setNotificationUrl('https://example.com/notifyUrl');
+            ->setCancelUrl('https://example.com/cancelUrl');
+            
+        $response = $this->order->create();
+
+```
+
+### ℹ Order Details
+
+```php
+
+use EwertonDaniel\PayPal\Order;
+        $order_id = $_POST['token'];
+        $detail = $order->setOrderId($order_id)->detail();
+
+```
+
 ## 📖 Documentation
 
 ### 🔗 Visit the PayPal for further information regarding:

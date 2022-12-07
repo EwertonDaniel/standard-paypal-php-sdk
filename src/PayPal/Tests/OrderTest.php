@@ -3,9 +3,10 @@
 namespace EwertonDaniel\PayPal\Tests;
 
 use EwertonDaniel\PayPal\Auth;
+use EwertonDaniel\PayPal\Exceptions\OrderException;
+use EwertonDaniel\PayPal\Exceptions\PayPalAuthenticationException;
 use EwertonDaniel\PayPal\Exceptions\ValidationException;
 use EwertonDaniel\PayPal\Order;
-use EwertonDaniel\PayPal\PurchaseUnit\Item;
 use EwertonDaniel\PayPal\Traits\DisplayColor;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
@@ -16,6 +17,8 @@ class OrderTest extends TestCase
 {
     use DisplayColor;
 
+    protected string $client_id;
+    protected string $client_secret;
     const RETURN_URL = 'https://example.com/returnUrl';
     const CANCEL_URL = 'https://example.com/cancelUrl';
     const NOTIFY_URL = 'https://example.com/notifyUrl';
@@ -23,9 +26,19 @@ class OrderTest extends TestCase
     const CLIENT_ID = '#';
     const CLIENT_SECRET = '#';
 
+    public function setCredentials(string $client_id, string $client_secret)
+    {
+        $this->client_id = $client_id;
+        $this->client_secret = $client_secret;
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws PayPalAuthenticationException
+     */
     function setUp(): void
     {
-        $this->auth = new Auth(self::CLIENT_ID, self::CLIENT_SECRET, false);
+        $this->auth = new Auth($this->client_id ?? self::CLIENT_ID, $this->client_secret ?? self::CLIENT_SECRET);
         $this->order = new Order($this->auth);
     }
 
@@ -87,15 +100,11 @@ class OrderTest extends TestCase
     function testPurchaseUnit(): void
     {
         $value = random_int(19900, 29900);
-        $item = (new Item())->setName('Blacksaber')
-            ->setQuantity(1)
-            ->setUnitAmount('BRL', $value);
         $purchase_unit = $this->order->purchaseUnit()
             ->setReferenceId()
-            ->addItem($item)
             ->setDescription('I can write up to one hundred and twenty seven characters as a testDescription description...')
-            ->setCurrencyCode('USD')
-            ->setValue($value)
+            ->setCurrencyCode('brl')
+            ->addItemWithBasicData('Blacksaber', 1, $value)
             ->toArray();
         if (!empty($purchase_unit)) {
             print $this->success('Purchase Unit => OK');
@@ -135,20 +144,14 @@ class OrderTest extends TestCase
      */
     function testCreateOrder(): void
     {
-
-        $value = random_int(19900, 29900);
-        $item = (new Item())->setName('Blacksaber Mandalore')
-            ->setQuantity(1)
-            ->setUnitAmount('BRL', $value);
         $this->order
             ->setPaypalRequestId()
             ->setIntent('CAPTURE')
             ->purchaseUnit()
-            ->addItem($item)
-            ->setReferenceId()
-            ->setDescription('I can write up to one hundred and twenty seven characters as a testDescription description...')
             ->setCurrencyCode('BRL')
-            ->setValue($value);
+            ->addItemWithBasicData('Blacksaber Mandalore', 1, 29900)
+            ->setReferenceId()
+            ->setDescription('I can write up to one hundred and twenty seven characters as a testDescription description...');
         $this->order->pushPurchaseUnit()
             ->paymentSource()
             ->paypal()
@@ -169,5 +172,17 @@ class OrderTest extends TestCase
             print $this->information('Payer Action: ' . $response['links']['payer_action']['url']);
         }
         $this->assertIsArray($response);
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws ValidationException
+     * @throws OrderException
+     */
+    function testOrderDetails(): void
+    {
+        $detail = $this->order->setOrderId('4C238569VN099203H')->detail();
+        print_r($detail);
+        $this->assertIsArray($detail);
     }
 }

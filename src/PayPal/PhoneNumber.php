@@ -3,6 +3,7 @@
 namespace EwertonDaniel\PayPal;
 
 use EwertonDaniel\PayPal\Exceptions\ValidationException;
+use GuzzleHttp\Utils;
 
 class PhoneNumber
 {
@@ -86,9 +87,13 @@ class PhoneNumber
         return $this->extension_number;
     }
 
-
     public function toArray(): array
     {
         return get_object_vars($this);
+    }
+
+    public function __toString(): string
+    {
+        return Utils::jsonEncode($this->toArray());
     }
 }

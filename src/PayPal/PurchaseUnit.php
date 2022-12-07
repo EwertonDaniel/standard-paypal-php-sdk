@@ -2,6 +2,7 @@
 
 namespace EwertonDaniel\PayPal;
 
+use EwertonDaniel\PayPal\Exceptions\EmailValidationException;
 use EwertonDaniel\PayPal\Exceptions\ValidationException;
 use EwertonDaniel\PayPal\PurchaseUnit\Item;
 use EwertonDaniel\PayPal\PurchaseUnit\Payee;
@@ -34,10 +35,13 @@ class PurchaseUnit
         return $this;
     }
 
-    public function setValue(int $value): static
+    private function setValue(): void
     {
-        $this->amount['value'] = round(($value / 100), 2);
-        return $this;
+        $value = 0.00;
+        foreach ($this->items as $item) {
+            $value += $item['unit_amount']['value'];
+        }
+        $this->amount['value'] = round($value, 2);
     }
 
     private function setBreakdownValue(): void
@@ -60,6 +64,22 @@ class PurchaseUnit
         return $this;
     }
 
+    /**
+     * @throws ValidationException
+     */
+    public function addItemWithBasicData(string $name, int $quantity, int $value): static
+    {
+        $this->items[] = (new Item())
+            ->setName($name)
+            ->setQuantity($quantity)
+            ->setUnitAmount($this->amount['currency_code'], $value)->toArray();
+        return $this;
+    }
+
+    /**
+     * @throws ValidationException
+     * @throws EmailValidationException
+     */
     public function payee(string $email_address, string $merchant_id): Payee
     {
         $this->payee = new Payee($email_address, $merchant_id);
@@ -170,6 +190,7 @@ class PurchaseUnit
 
     public function toArray(): array
     {
+        $this->setValue();
         $this->setBreakdownValue();
         if (isset($this->shipping) && !is_array($this->shipping)) {
             $this->shipping = $this->shipping->toArray();

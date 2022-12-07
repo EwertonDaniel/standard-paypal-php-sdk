@@ -16,8 +16,11 @@ class PaypalPaymentSource
      */
     public function phoneNumber(string $country_code, string $national_number, string $extension_number): static
     {
-        $phone_number = new PhoneNumber();
-        $this->phone_number = $phone_number->setCountryCode($country_code)->setNationalNumber($national_number)->setExtensionNumber($extension_number)->toArray();
+        $this->phone_number = (new PhoneNumber())
+            ->setCountryCode($country_code)
+            ->setNationalNumber($national_number)
+            ->setExtensionNumber($extension_number)
+            ->toArray();
         return $this;
     }
 
